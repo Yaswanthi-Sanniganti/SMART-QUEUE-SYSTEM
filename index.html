@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartQueue | Smart Queue Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #222;
+            background: #f7f9fc;
+        }
+
+        /* Navigation */
+        nav {
+            background: #0b3d91;
+            color: white;
+            padding: 15px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav h2 {
+            font-size: 24px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 8%;
+            background: linear-gradient(135deg, #eaf2ff, #ffffff);
+            gap: 40px;
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 50px;
+            color: #0b3d91;
+            margin-bottom: 20px;
+        }
+
+        .hero h3 {
+            font-size: 25px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 25px;
+            background: #0b3d91;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #06275f;
+            transform: translateY(-2px);
+        }
+
+        /* Queue Demo */
+        .queue-card {
+            background: white;
+            width: 350px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        .queue-card h2 {
+            color: #0b3d91;
+            margin-bottom: 15px;
+        }
+
+        .queue-number {
+            font-size: 65px;
+            font-weight: bold;
+            color: #0b3d91;
+            margin: 15px 0;
+        }
+
+        .status {
+            color: green;
+            font-weight: bold;
+        }
+
+        /* Common Sections */
+        section {
+            padding: 70px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 35px;
+            color: #0b3d91;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        /* Problem */
+        .problem {
+            background: white;
+        }
+
+        .problem-box {
+            max-width: 900px;
+            margin: auto;
+            text-align: center;
+            font-size: 18px;
+            color: #555;
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: #0b3d91;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #666;
+        }
+
+        /* How It Works */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .step {
+            background: white;
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+        }
+
+        .step-number {
+            width: 45px;
+            height: 45px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #0b3d91;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .step h3 {
+            color: #0b3d91;
+            margin-bottom: 10px;
+        }
+
+        /* Target Customers */
+        .customers {
+            background: white;
+        }
+
+        .customer-list {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .customer {
+            background: #eef4ff;
+            padding: 20px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #0b3d91;
+        }
+
+        /* Pricing */
+        .pricing-card {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .price {
+            font-size: 45px;
+            font-weight: bold;
+            color: #0b3d91;
+            margin: 20px 0;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .pricing-card li {
+            margin: 10px 0;
+        }
+
+        /* Mission */
+        .mission {
+            background: #0b3d91;
+            color: white;
+            text-align: center;
+        }
+
+        .mission h2 {
+            font-size: 35px;
+            margin-bottom: 20px;
+        }
+
+        .mission p {
+            max-width: 800px;
+            margin: auto;
+            font-size: 18px;
+        }
+
+        /* Contact */
+        .contact {
+            text-align: center;
+            background: white;
+        }
+
+        .contact p {
+            margin: 15px 0 25px;
+            color: #555;
+        }
+
+        /* Footer */
+        footer {
+            background: #061f49;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .features {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .customer-list {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            nav ul {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 50px 5%;
+            }
+
+            .hero h1 {
+                font-size: 35px;
+            }
+
+            .queue-card {
+                width: 100%;
+            }
+
+            .features,
+            .steps,
+            .customer-list {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 50px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <h2>SmartQueue</h2>
+
+        <ul>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#solution">Solution</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="hero-text">
+
+            <h1>SmartQueue</h1>
+
+            <h3>Smart Queue Management System</h3>
+
+            <p>
+                Reduce waiting time, avoid overcrowding, and provide
+                customers with a faster and more convenient service
+                experience using smart queue management technology.
+            </p>
+
+            <a href="#contact" class="btn">Get Started</a>
+
+        </div>
+
+
+        <!-- Live Queue Demo -->
+        <div class="queue-card">
+
+            <h2>Live Queue</h2>
+
+            <p>Your Queue Number</p>
+
+            <div class="queue-number">
+                A24
+            </div>
+
+            <p>People Ahead: <strong>3</strong></p>
+
+            <p class="status">
+                ● Queue Active
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Problem Section -->
+    <section id="problem" class="problem">
+
+        <div class="section-title">
+
+            <h2>The Problem</h2>
+
+            <p>
+                Traditional queue systems create unnecessary waiting
+                and inconvenience for customers.
+            </p>
+
+        </div>
+
+        <div class="problem-box">
+
+            <p>
+                Long queues are common in hospitals, banks, restaurants,
+                offices, and service centers. Customers spend valuable
+                time waiting, while overcrowding can reduce service
+                efficiency and customer satisfaction.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Solution Section -->
+    <section id="solution">
+
+        <div class="section-title">
+
+            <h2>Our Solution</h2>
+
+            <p>
+                SmartQueue provides a simple and affordable digital
+                solution for managing customer queues efficiently.
+            </p>
+
+        </div>
+
+        <div class="problem-box">
+
+            <p>
+                Customers receive a digital queue number and real-time
+                updates about their position in the queue. This allows
+                them to avoid unnecessary waiting and helps businesses
+                manage customers in an organized manner.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Features Section -->
+    <section id="features">
+
+        <div class="section-title">
+
+            <h2>Key Features</h2>
+
+            <p>
+                Everything needed for a simple and efficient queue
+                management experience.
+            </p>
+
+        </div>
+
+
+        <div class="features">
+
+            <div class="feature-card">
+
+                <h3>Digital Queue</h3>
+
+                <p>
+                    Customers can receive a digital queue number
+                    without standing in long physical lines.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <h3>Real-Time Updates</h3>
+
+                <p>
+                    Customers can monitor their queue position
+                    and receive timely updates.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <h3>Reduced Waiting</h3>
+
+                <p>
+                    Customers can use their waiting time more
+                    productively instead of standing in queues.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <h3>Easy Management</h3>
+
+                <p>
+                    Businesses can manage customer queues in a
+                    simple and organized way.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <h3>Affordable</h3>
+
+                <p>
+                    A cost-effective solution designed for
+                    small and medium-sized businesses.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <h3>User Friendly</h3>
+
+                <p>
+                    Simple interfaces make the system easy to
+                    understand and use.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- How It Works -->
+    <section>
+
+        <div class="section-title">
+
+            <h2>How It Works</h2>
+
+            <p>
+                SmartQueue makes queue management simple in four steps.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">1</div>
+
+                <h3>Join</h3>
+
+                <p>
+                    Customer joins the digital queue.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">2</div>
+
+                <h3>Get Number</h3>
+
+                <p>
+                    Customer receives a digital queue number.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">3</div>
+
+                <h3>Track</h3>
+
+                <p>
+                    Customer tracks their position in real time.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">4</div>
+
+                <h3>Get Served</h3>
+
+                <p>
+                    Customer reaches the service counter
+                    when their turn arrives.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Target Customers -->
+    <section class="customers">
+
+        <div class="section-title">
+
+            <h2>Who Can Use SmartQueue?</h2>
+
+            <p>
+                SmartQueue can be used by different businesses
+                and service organizations.
+            </p>
+
+        </div>
+
+
+        <div class="customer-list">
+
+            <div class="customer">
+                Hospitals
+            </div>
+
+            <div class="customer">
+                Banks
+            </div>
+
+            <div class="customer">
+                Restaurants
+            </div>
+
+            <div class="customer">
+                Offices
+            </div>
+
+            <div class="customer">
+                Service Centers
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Pricing -->
+    <section id="pricing">
+
+        <div class="section-title">
+
+            <h2>Simple Pricing</h2>
+
+            <p>
+                Affordable pricing for businesses of different sizes.
+            </p>
+
+        </div>
+
+
+        <div class="pricing-card">
+
+            <h2>Business Plan</h2>
+
+            <div class="price">
+                ₹499
+                <span style="font-size:18px;">/month</span>
+            </div>
+
+            <ul>
+
+                <li>✓ Digital Queue Management</li>
+
+                <li>✓ Real-Time Queue Updates</li>
+
+                <li>✓ Customer Queue Tracking</li>
+
+                <li>✓ Easy Business Management</li>
+
+                <li>✓ User-Friendly System</li>
+
+            </ul>
+
+            <a href="#contact" class="btn">
+                Request Demo
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Mission -->
+    <section class="mission">
+
+        <h2>Our Mission</h2>
+
+        <p>
+            Our mission is to transform traditional queue management
+            with smart, affordable, and easy-to-use technology.
+            We aim to reduce waiting time, improve customer
+            satisfaction, and help businesses provide faster and
+            more efficient services.
+        </p>
+
+    </section>
+
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+
+        <div class="section-title">
+
+            <h2>Get Started</h2>
+
+            <p>
+                Interested in SmartQueue? Contact us to request
+                a demo or learn more about our solution.
+            </p>
+
+        </div>
+
+        <!-- Replace this email with your actual team email -->
+        <a href="mailto:VisionCraft@gmail.com" class="btn">
+            Contact Us
+        </a>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            © 2026 SmartQueue. All Rights Reserved.
+        </p>
+
+        <p>
+            Smart Queue Management System
+        </p>
+
+    </footer>
+
+</body>
+</html>
